@@ -8,11 +8,14 @@
 </head>
 
 <body>
+    <center>
     <input type="text" id="user_name" class="form-control" placeholder="Nome de Usuário">
-    <button id="login_button" claas="btn btn-primary" onclick="addUser();">Entrar</button>
-    <button id="Exit_button" claas="btn btn-primary" onclick="setUser();">Sair</button>
-    <button id="Sala_button" claas="btn btn-primary" onclick="user_name();">Criar</button>
-
+    <button id="login_button" onclick="addUser()" class="btn btn-primary">Entrar</button>
+    <button id="Exit_button" onclick="setUser()" class="btn btn-primary">Sair</button>
+    <button id="Sala_button" onclick="user_name()" class="btn btn-primary">Criar</button>
+    <button id="logout" onclick="logout()" class="btn btn-danger">
     
+    <output id="msg">Enviar</output>
+    </button>
+</center>
 </body>
-</html>
