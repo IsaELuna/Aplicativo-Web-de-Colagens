@@ -1,21 +1,49 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="chat.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<title>Vamos Conversar</title>
+	<!-- LINK DO FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-database.js"></script>
+	<!-- LINK DO BOOTSTRAP -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<!-- LINK DO ARQUIVO STYLE.CSS -->
+	<link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
+<body onload="carregar()">
 
-<body>
-    <center>
-    <input type="text" id="user_name" class="form-control" placeholder="Nome de Usuário">
-    <button id="login_button" onclick="addUser()" class="btn btn-primary">Entrar</button>
-    <button id="Exit_button" onclick="setUser()" class="btn btn-primary">Sair</button>
-    <button id="Sala_button" onclick="user_name()" class="btn btn-primary">Criar</button>
-    <button id="logout" onclick="logout()" class="btn btn-danger">
-    
-    <output id="msg">Enviar</output>
-    </button>
-</center>
+
+<div class="container">
+	<!--Cria o botão que desloga o usuário -->
+	<button class="btn btn-danger" onclick="logout()">Log Out</button>
+	
+	<center>
+		<h1  class="header">	
+			Vamos Conversar	
+		</h1>
+		<!--Esse elemento serve para exibir o nome do usuário -->
+		<h3 id="userName" class="color_white"></h3>
+
+		<div class="form-group input_div_room_page">
+			<label>Criar sala:</label>
+			<!--caixa de texto para o usuário escrever o nome da sala-->
+			<input type="text" id="roomName" class="form-control" placeholder="#Nome da Sala">		
+		</div>
+
+		<!--Esse botão permite adicionar o nome da sala no banco de dados-->
+		<button onclick="addSala();" class="btn btn-success">#Adicionar Sala</button>
+
+		<h3 class="color_white">#SALASTRENDING</h3>
+			<div id="output"></div>
+		
+	</center>
+</div>
+
+
+<script src="chat.js"></script>
 </body>
+</html>

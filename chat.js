@@ -7,50 +7,49 @@ const firebaseConfig = {
   messagingSenderId: "303871143651",
   appId: "1:303871143651:web:b1a31beaf936a32edadfd6"
 };
+
 firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
 
-localStorage.setItem("user_name", user_name);
-
-window.location = "chat_room.html";
-
-function addUser(){
-  User_name = document.getElementById("username_name").value;
-  
-  firebase.database().ref("/").child(room_name).update({
-    purpose : "adicionando nome do usuario"
-  });
+function addSala(){
+  var roomName = document.getElementById("roomName").value;
+  localStorage.setItem("roomName", roomName);
+  database.ref("/").child(roomName).update({
+    proposito:"adicionar sala"
+  })
 }
 
-  function addRoom(){
-  room_name = document.getElementById("room_name").value;
+var campo ='';
 
-  firebase.database().ref("/").child(room_name).update({
-    purpose : "adicionando nome da sala"
-  });
-
-    localStorage.setItem("room_name", room_name);
-    
-    window.location = "index.html";
+function lerDados(){
+  database.ref("/").on("value",(data)=>{
+    campo ='';
+    data.forEach((subpasta)=>{
+      sala = subpasta.key;
+      linha = "<div class='sala' id="+sala+" onclick='irSala(this.id)' >"+sala+"</div> <hr>";
+      campo +=linha;
+    });
+    document.getElementById("output").innerHTML = campo;
+  })
 }
+lerDados()
 
-function getData()
-{
-  firebase.database().ref("/").on('value', function(snapshot)
-  {document.getElementById("outout").innetHTML = ""; snapchot.forEach(function(childrenNapshot) {ChilldKey = childNsapshot.key;
-                Room_names = childKey;
-  });
-  });
-    getData();
+function irSala(sala){
+  localStorage.setItem("roomName", sala);
+  window.location = 'kwitterPage.html'
 }
-
-function redirectToRoomName(name) {
-  console.log(name);
-  localStorage.setItem("room_name", name);
-  window.location = "index.html"; }
 
 function logout(){
-  localStorage.removeItem("User_name");
-  localStorage.removeItem("addRoom");
-  window.location="index.html";
+  //Remove o Nome de Usuario e sala do localStorage
+  localStorage.removeItem("userName");
+  localStorage.removeItem("roomName");
+  //Move o usuario para o index.html
+  window.location = 'index.html';
+}
+
+//exibe o nome do usuário no site kwitterRoom.js
+function carregar(){
+  var nome = localStorage.getItem("userName");
+ document.getElementById("userName").innerHTML = " Seja bem vindo(a) "  +  nome;
 }
 
