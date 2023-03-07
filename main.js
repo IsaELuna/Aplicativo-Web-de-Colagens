@@ -1,11 +1,12 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyCjIgxnuL1qNXUZqXLqjED4snNvOndAUbM",
-    authDomain: "vamos-conversar-6b629.firebaseapp.com",
-    projectId: "vamos-conversar-6b629",
-    storageBucket: "vamos-conversar-6b629.appspot.com",
-    messagingSenderId: "303871143651",
-    appId: "1:303871143651:web:b1a31beaf936a32edadfd6"
-  };
+  apiKey: "AIzaSyCjIgxnuL1qNXUZqXLqjED4snNvOndAUbM",
+  authDomain: "vamos-conversar-6b629.firebaseapp.com",
+  databaseURL: "https://vamos-conversar-6b629-default-rtdb.firebaseio.com",
+  projectId: "vamos-conversar-6b629",
+  storageBucket: "vamos-conversar-6b629.appspot.com",
+  messagingSenderId: "303871143651",
+  appId: "1:303871143651:web:b1a31beaf936a32edadfd6"
+};
   
   firebase.initializeApp(firebaseConfig);
   var database = firebase.database();
