@@ -1,84 +1,64 @@
-var SpeechRecognition = window.webkitSpeechRecognition;
-var Content;
-var recognition = new SpeechRecognition();
+const firebaseConfig = {
+  apiKey: "AIzaSyCjIgxnuL1qNXUZqXLqjED4snNvOndAUbM",
+  authDomain: "vamos-conversar-6b629.firebaseapp.com",
+  databaseURL: "https://vamos-conversar-6b629-default-rtdb.firebaseio.com",
+  projectId: "vamos-conversar-6b629",
+  storageBucket: "vamos-conversar-6b629.appspot.com",
+  messagingSenderId: "303871143651",
+  appId: "1:303871143651:web:b1a31beaf936a32edadfd6"
+};
+  
+  firebase.initializeApp(firebaseConfig);
+  var database = firebase.database();
 
-function start()
-{
-    recognition.start();
-} 
- 
-recognition.onresult = function(event) {
+var nome = localStorage.getItem("userName");
+var nomeSala = localStorage.getItem("roomName");
 
- console.log(event); 
-
- Content = event.results[0][0].transcript.toLowerCase();
-   console.log(Content);
-   if (Content == "selfie") {
-    speak();
-    }
-
-}
-
-
-function speak(){
-    var synth = window.speechSynthesis;
-    Webcam.attach(camera);
-
-    speak_data = "Tirando sua selfie em 5 segundos";
-    var utterThis = new SpeechSynthesisUtterance(speak_data);
-    synth.speak(utterThis);
-
-
-    setTimeout(function()
-    { 
-        img_id = "selfie1";
-        take_snapshot(); 
-        speak_data = "Tirando sua selfie em 10 segundos";
-        var utterThis = new SpeechSynthesisUtterance(speak_data);
-        synth.speak(utterThis);
-
-      }, 5000);
-
-    setTimeout(function()
-    { 
-        img_id = "selfie2";
-        take_snapshot(); 
-        speak_data = "Tirando sua selfie em 15 segundos";
-        var utterThis = new SpeechSynthesisUtterance(speak_data);
-        synth.speak(utterThis);
-        
-    }, 10000);
-
-    setTimeout(function()
-    { 
-        img_id = "selfie3";
-        take_snapshot(); 
-
-    }, 15000);
-
-}
-
-function take_snapshot(){
-    console.log(img_id);
-
-    Webcam.snap(function(data_uri) {
-        if(img_id=="selfie1"){
-            document.getElementById("result1").innerHTML = '<img id="selfie1" src="'+data_uri+'"/>';
-        }
-        if(img_id=="selfie2"){
-            document.getElementById("result2").innerHTML = '<img id="selfie2" src="'+data_uri+'"/>';
-        }
-        if(img_id=="selfie3"){
-            document.getElementById("result3").innerHTML = '<img id="selfie3" src="'+data_uri+'"/>';
-        }
+function enviar(){
+  var msg = document.getElementById("msg").value;
+  //Guardar mensagem no firebase
+    db.ref(nomeSala).push({
+      like:0, msg:msg, nome:nome
     });
 }
 
+function logout(){
+  localStorage.removeItem("userName");
+localStorage.removeItem("roomName");
+window.location ='index.html';
+}
 
-camera = document.getElementById("camera");
-Webcam.set({
-    width:500,
-    height:400,
-    image_format : 'jpeg',
-    jpeg_quality:90
-});
+
+//ler do banco de dados as mensagens e mostrar na tela
+db.ref(nomeSala).on("value", (data)=>{
+//limpa a div
+document.getElementById("output").innerHTML = '';
+//repete comando para cada valor
+data.forEach((dados)=>{
+  if(dados.key != 'proposito'){
+    var id = dados.key;
+    var valores = dados.val();
+    //guarda os valores do banco de dados
+    var mensagem = valores['msg'];
+    var nome = valores['nome'];
+    var likes = valores['like'];
+    //faz uma tag html para a mensagem
+    var msghtml  =  "<h3> "+ mensagem +"<img src='selo.png' width=20 height=20/></h3>";
+    //faz uma tag html para o nome
+    var nomehtml = "<h4 class='text-muted'> "+nome+"</h4>";
+    //faz um botão para os likes
+    var botaoLike = "<button class='btn btn-warning' id="+id+" value="+likes+" onclick='attLike(this.id)'>";
+    var likeshtml = "<span class='glyphicon glyphicon-thumbs-up'></span>Likes:"+likes+"</button>";
+    linha = msghtml + nomehtml + botaoLike + likeshtml;
+    document.getElementById("output").innerHTML += linha
+  }
+})
+})
+//atualiza o site
+function attLike(id){
+likes = document.getElementById(id).value;
+likes = Number(likes) + 1;
+db.ref(nomeSala).child(id).update({
+  like:likes
+})
+}
